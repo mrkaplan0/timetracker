@@ -5,7 +5,7 @@ import 'package:timetracker/utils/consts.dart';
 
 class RegisterPage extends ConsumerWidget {
   RegisterPage({super.key});
-  late String _password, _email, _verifyPasswort;
+  late String _password, _email, _verifyPasswort, _username;
   final String _invalidPassword =
       "Das Passwort muss mindestens 6 Zeichen lang sein";
   final String _passwordLabelText = 'Passwort';
@@ -41,6 +41,31 @@ class RegisterPage extends ConsumerWidget {
                   const Text(
                     'Registrieren',
                     style: MyConsts.myBigTitleTextStyle,
+                  ),
+
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Benutzername',
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 40,
+                        vertical: 20,
+                      ),
+                      suffixIcon: Padding(
+                        padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
+                        child: Icon(Icons.person_outline_rounded),
+                      ),
+                    ),
+                    validator: (value) {
+                      _username = value!;
+                      return value.isEmpty
+                          ? 'Bitte einen Benutzernamen eingeben'
+                          : null;
+                    },
+                    onSaved: (String? value) {
+                      _username = value!;
+                    },
+                    keyboardType: TextInputType.text,
                   ),
 
                   TextFormField(

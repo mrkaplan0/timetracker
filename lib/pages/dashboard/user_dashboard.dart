@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
+import 'package:timetracker/pages/time_entries/add_time_entry.dart';
 import 'package:timetracker/utils/consts.dart';
 import 'package:timetracker/widgets/custom_button.dart';
 
@@ -20,7 +20,11 @@ class UserDashboard extends ConsumerWidget {
             SizedBox(height: 20),
             CustomButton(
               onTap: () {
-                // Handle button tap
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const AddTimeEntryPage(),
+                  ),
+                );
               },
               imagePath: 'assets/images/add.jpg',
               height: 250,
