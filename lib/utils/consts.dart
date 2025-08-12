@@ -7,4 +7,5 @@ class MyConsts {
     fontWeight: FontWeight.bold,
     fontSize: myBigTitleSize,
   );
+  static const myLittleTitleTextStyle = TextStyle(fontWeight: FontWeight.bold);
 }
