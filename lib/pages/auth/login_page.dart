@@ -1,10 +1,17 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timetracker/pages/auth/register_page.dart';
+import 'package:timetracker/providers/auth_provider.dart';
 import 'package:timetracker/utils/consts.dart';
 
 class LoginPage extends ConsumerWidget {
   late String _password, _email;
+  final RegExp _emailRegex = RegExp(
+    r'^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$',
+    caseSensitive: false,
+  );
   final String _invalidPassword =
       "Das Passwort muss mindestens 6 Zeichen lang sein";
   FocusNode focusNode = FocusNode();
@@ -35,6 +42,7 @@ class LoginPage extends ConsumerWidget {
                   const Text('Anmelden', style: MyConsts.myBigTitleTextStyle),
 
                   TextFormField(
+                    initialValue: "a@e.com",
                     focusNode: focusNode,
                     decoration: const InputDecoration(
                       labelText: 'Email',
@@ -49,20 +57,25 @@ class LoginPage extends ConsumerWidget {
                       ),
                     ),
                     validator: (value) {
-                      _email = value!;
-                      return value.contains('@')
-                          ? null
-                          : 'Bitte eine gültige E-Mail-Adresse eingeben';
+                      final v = (value ?? '').trim();
+                      if (v.isEmpty) {
+                        return 'Bitte eine gültige E-Mail-Adresse eingeben';
+                      }
+                      if (!_emailRegex.hasMatch(v)) {
+                        return 'Bitte eine gültige E-Mail-Adresse eingeben';
+                      }
+                      return null; // valid
                     },
 
                     onSaved: (String? value) {
-                      _email = value!;
+                      _email = (value ?? '').trim();
                     },
 
                     keyboardType: TextInputType.emailAddress,
                   ),
 
                   TextFormField(
+                    initialValue: "password",
                     focusNode: focusNode2,
                     decoration: const InputDecoration(
                       labelText: 'Passwort',
@@ -77,12 +90,16 @@ class LoginPage extends ConsumerWidget {
                       ),
                     ),
                     validator: (value) {
-                      _password = value!;
-                      return value.length < 6 ? _invalidPassword : null;
+                      final v = (value ?? '').trim();
+                      if (v.isEmpty || v.length < 6) {
+                        return _invalidPassword;
+                      } else {
+                        return null;
+                      }
                     },
 
                     onSaved: (String? gelenSifre) {
-                      _password = gelenSifre!;
+                      _password = (gelenSifre ?? '').trim();
                     },
 
                     obscureText: true,
@@ -90,7 +107,7 @@ class LoginPage extends ConsumerWidget {
 
                   ElevatedButton(
                     onPressed: () {
-                      // Handle login logic here
+                      _login(context, ref);
                     },
                     child: const Text('Anmelden'),
                   ),
@@ -109,5 +126,43 @@ class LoginPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  void _login(BuildContext context, WidgetRef ref) async {
+    try {
+      if (_formKey.currentState!.validate()) {
+        _formKey.currentState!.save();
+        var authService = ref.read(authServiceProvider);
+        var (user, token) = await authService.login(
+          email: _email,
+          password: _password,
+        );
+
+        if (token.isEmpty || user == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Login fehlgeschlagen. Bitte versuchen Sie es erneut.',
+              ),
+            ),
+          );
+          return;
+        } else {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Willkommen ${user.name}!')));
+          // Navigate to home or another page after successful login
+          Navigator.pushReplacementNamed(context, '/home');
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Bitte füllen Sie alle Felder aus')),
+        );
+      }
+    } on Exception catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Ein Fehler ist aufgetreten: $e')));
+    }
   }
 }

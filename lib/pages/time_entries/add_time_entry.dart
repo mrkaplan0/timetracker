@@ -32,6 +32,7 @@ class _AddTimeEntryPageState extends ConsumerState<AddTimeEntryPage> {
     if (pickedDate != null) {
       // Then show time picker
       final TimeOfDay? pickedTime = await showTimePicker(
+        // ignore: use_build_context_synchronously
         context: context,
         initialTime: TimeOfDay.now(),
       );
@@ -97,10 +98,7 @@ class _AddTimeEntryPageState extends ConsumerState<AddTimeEntryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Zeiteintrag hinzufügen'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
+      appBar: AppBar(title: const Text('Zeiteintrag hinzufügen')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(

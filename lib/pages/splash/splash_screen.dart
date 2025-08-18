@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:timetracker/utils/consts.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -21,11 +22,31 @@ class SplashScreen extends StatelessWidget {
                   end: 0,
                   builder: (_, value, __) => Container(
                     height: value,
-                    decoration: BoxDecoration(
-                      color: Colors.deepPurple.shade300,
+                    decoration: BoxDecoration(color: Colors.blueGrey.shade300),
+                  ),
+                )
+                .fadeOut(),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Animate()
+                .custom(
+                  duration: 3.seconds,
+                  begin: 0,
+                  end: height / 2,
+                  builder: (_, value, __) => Container(
+                    height: height / 2,
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Sportless GmbH",
+                      style: MyConsts.myBigTitleTextStyle,
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 )
+                .fadeIn()
                 .fadeOut(),
           ),
 
@@ -40,9 +61,7 @@ class SplashScreen extends StatelessWidget {
                   end: 0,
                   builder: (_, value, __) => Container(
                     height: value,
-                    decoration: BoxDecoration(
-                      color: Colors.deepPurple.shade300,
-                    ),
+                    decoration: BoxDecoration(color: Colors.blueGrey.shade300),
                   ),
                 )
                 .fadeOut(),
@@ -57,7 +76,12 @@ class SplashScreen extends StatelessWidget {
               )
               .animate(delay: const Duration(milliseconds: 2500))
               .fadeOut(duration: const Duration(seconds: 1), begin: 1.0)
-              .blurXY(),
+              .blurXY()
+              .callback(
+                callback: (value) {
+                  Navigator.of(context).pushReplacementNamed('/landing');
+                },
+              ),
         ],
       ),
     );

@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:timetracker/pages/auth/login_page.dart';
+import 'package:timetracker/pages/auth/register_page.dart';
+import 'package:timetracker/pages/dashboard/user_dashboard.dart';
 import 'package:timetracker/pages/landing_page.dart';
+import 'package:timetracker/pages/splash/splash_screen.dart';
 
 void main() {
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+    debugPrint('Global error: ${details.exception}');
+  };
   runApp(ProviderScope(child: const MyApp()));
 }
 
@@ -17,10 +25,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Time Tracker',
+      navigatorKey: rootNavigatorKey,
+      themeMode: ThemeMode.light,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const SplashScreen(),
+        '/home': (context) => const UserDashboard(),
+        '/register': (context) => RegisterPage(),
+        '/login': (context) => LoginPage(),
+        '/landing': (context) => const LandingPage(),
+      },
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
       ),
-      home: const LandingPage(),
     );
   }
 }

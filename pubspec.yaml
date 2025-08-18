@@ -40,6 +40,8 @@ dependencies:
   dio: ^5.9.0
   flutter_animate: ^4.5.2
   liquid_glass_renderer: ^0.1.1-dev.10
+  json_annotation: ^4.9.0
+  flutter_secure_storage: ^9.2.4
 
 dev_dependencies:
   flutter_test:
@@ -56,6 +58,8 @@ dev_dependencies:
   custom_lint: ^0.7.6
   riverpod_lint: ^2.6.5
   freezed: ^3.1.0
+  json_serializable: ^6.9.5
+  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

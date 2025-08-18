@@ -1,11 +1,21 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timetracker/main.dart';
+import 'package:timetracker/providers/auth_provider.dart';
 import 'package:timetracker/utils/consts.dart';
 
 class RegisterPage extends ConsumerWidget {
   RegisterPage({super.key});
-  late String _password, _email, _verifyPasswort, _username;
+  late String _email, _username;
+  String _verifyPasswort = '';
+  String _password = '';
+  final RegExp _emailRegex = RegExp(
+    r'^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$',
+    caseSensitive: false,
+  );
+
   final String _invalidPassword =
       "Das Passwort muss mindestens 6 Zeichen lang sein";
   final String _passwordLabelText = 'Passwort';
@@ -13,6 +23,8 @@ class RegisterPage extends ConsumerWidget {
   final String _passwordHintText = 'Passwort eingeben.';
   final String _password2HintText = 'Passwort nochmals eingeben.';
   final String _wrongPassword = "Passwörter stimmen nicht überein.";
+  final String invalidEmailPrompt =
+      'Bitte eine gültige E-Mail-Adresse eingeben';
 
   FocusNode focusNode = FocusNode();
   FocusNode focusNode2 = FocusNode();
@@ -82,10 +94,16 @@ class RegisterPage extends ConsumerWidget {
                       ),
                     ),
                     validator: (value) {
-                      _email = value!;
-                      return value.contains('@')
-                          ? null
-                          : 'Bitte eine gültige E-Mail-Adresse eingeben';
+                      final v = (value ?? '').trim();
+                      _email = v;
+
+                      if (v.isEmpty) {
+                        return invalidEmailPrompt;
+                      }
+                      if (!_emailRegex.hasMatch(v)) {
+                        return invalidEmailPrompt;
+                      }
+                      return null;
                     },
 
                     onSaved: (String? value) {
@@ -100,7 +118,7 @@ class RegisterPage extends ConsumerWidget {
 
                   ElevatedButton(
                     onPressed: () {
-                      _register(context);
+                      _register(context, ref);
                     },
                     child: const Text('Registrieren'),
                   ),
@@ -122,7 +140,7 @@ class RegisterPage extends ConsumerWidget {
   TextFormField passwordFormfield(BuildContext context) {
     return TextFormField(
       focusNode: focusNode,
-      initialValue: "1234555",
+      initialValue: "password",
       obscureText: true,
       decoration: InputDecoration(
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -138,14 +156,15 @@ class RegisterPage extends ConsumerWidget {
         ),
       ),
       validator: (value) {
-        _password = value!;
-        return value.length < 6 ? _invalidPassword : null;
+        final v = (value ?? '').trim();
+        _password = v;
+        return v.length < 6 ? _invalidPassword : null;
       },
       onFieldSubmitted: (value) {
         focusNode.unfocus();
       },
       onSaved: (String? gelenSifre) {
-        _password = gelenSifre!;
+        _password = (gelenSifre ?? '').trim();
       },
     );
   }
@@ -153,7 +172,7 @@ class RegisterPage extends ConsumerWidget {
   TextFormField passwordFormfield2(BuildContext context) {
     return TextFormField(
       focusNode: focusNode2,
-      initialValue: "1234555",
+      initialValue: "password",
       obscureText: true,
       decoration: InputDecoration(
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -169,10 +188,12 @@ class RegisterPage extends ConsumerWidget {
         ),
       ),
       validator: (value) {
-        _verifyPasswort = value!;
-        if (value.length < 6) {
+        final confirm = (value ?? '').trim();
+        _verifyPasswort = confirm;
+        final original = _password.trim();
+        if (confirm.length < 6) {
           return _invalidPassword;
-        } else if (_password != _verifyPasswort) {
+        } else if (original.isNotEmpty && original != confirm) {
           return _wrongPassword;
         } else {
           return null;
@@ -182,29 +203,42 @@ class RegisterPage extends ConsumerWidget {
         focusNode2.unfocus();
       },
       onSaved: (String? gelenSifre) {
-        _verifyPasswort = gelenSifre!;
+        _verifyPasswort = (gelenSifre ?? '').trim();
       },
     );
   }
 
-  Future _register(BuildContext context) async {
+  Future _register(BuildContext context, WidgetRef ref) async {
     try {
       if (_formKey.currentState!.validate()) {
         _formKey.currentState?.save();
-        /*   var createdUser = await ref
-            .read(userViewModelProvider)
-            .createUserWithEmailAndPassword(_emailController.text, _password);
-        if (createdUser != null) {
-          debugPrint(createdUser.toString());
-          if (mounted) {
-            Navigator.popAndPushNamed(context, '/LandingPage');
-          }
-        } */
+        print('$_username, $_email, $_password, $_verifyPasswort');
+        var authService = ref.read(authServiceProvider);
+
+        bool result = await authService.register(
+          name: _username,
+          email: _email,
+          password: _password,
+          role: 'user',
+        );
+
+        if (!result) {
+          _showErrorDialog(context, 'Registration failed. Please try again.');
+          return;
+        }
+        if (result) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Super! Jezt anmelden!')));
+          // Navigate to home or another page after successful registration
+          Navigator.pushReplacementNamed(context, '/login');
+        }
       }
-    } on Exception catch (e) {
-      String errorMessage = _getErrorMessage(e);
-      // ignore: use_build_context_synchronously
-      _showErrorDialog(context, errorMessage);
+    } catch (e) {
+      print(e);
+      // String errorMessage = _getErrorMessage(e);
+
+      _showErrorDialog(context, e.toString());
     }
   }
 
@@ -228,7 +262,7 @@ class RegisterPage extends ConsumerWidget {
     );
   }
 
-  String _getErrorMessage(Exception e) {
+  /*   String _getErrorMessage(Exception e) {
     switch (e.toString()) {
       case 'user-not-found':
         return 'No user found with this email.';
@@ -243,5 +277,5 @@ class RegisterPage extends ConsumerWidget {
       default:
         return 'An error occurred: ${e.toString()}';
     }
-  }
+  } */
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timetracker/pages/time_entries/add_time_entry.dart';
+import 'package:timetracker/providers/auth_provider.dart';
 import 'package:timetracker/utils/consts.dart';
 import 'package:timetracker/widgets/custom_button.dart';
 
@@ -10,8 +11,22 @@ class UserDashboard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 64, 82, 92),
-      appBar: AppBar(title: Text('Home', style: MyConsts.myBigTitleTextStyle)),
+      backgroundColor: Colors.blueGrey[500],
+      appBar: AppBar(
+        title: Text(
+          'Home',
+          style: MyConsts.myBigTitleTextStyle.copyWith(color: Colors.white),
+        ),
+        backgroundColor: Colors.transparent,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.white),
+            onPressed: () {
+              _logout(context, ref);
+            },
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Column(
@@ -35,5 +50,13 @@ class UserDashboard extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  void _logout(BuildContext context, WidgetRef ref) {
+    ref.read(logoutProvider);
+    ref.invalidate(currentUserProvider);
+    Navigator.of(
+      context,
+    ).pushNamedAndRemoveUntil('/landing', (Route<dynamic> route) => false);
   }
 }
