@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:timetracker/models/time_entry/time_entry.dart';
+import 'package:timetracker/models/user/user.dart';
+import 'package:timetracker/providers/auth_provider.dart';
+import 'package:timetracker/providers/entry_provider.dart';
 
 class AddTimeEntryPage extends ConsumerStatefulWidget {
   const AddTimeEntryPage({super.key});
@@ -58,7 +62,7 @@ class _AddTimeEntryPageState extends ConsumerState<AddTimeEntryPage> {
     }
   }
 
-  void _saveTimeEntry() {
+  void _saveTimeEntry() async {
     if (_formKey.currentState!.validate()) {
       if (_startDate == null || _endDate == null) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -79,16 +83,37 @@ class _AddTimeEntryPageState extends ConsumerState<AddTimeEntryPage> {
         );
         return;
       }
-
+      User? user = await ref.read(currentUserProvider.future);
       // Here the time entry saving operation will be performed
-      // For example: using provider or service
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Zeiteintrag erfolgreich gespeichert'),
-          backgroundColor: Colors.green,
-        ),
+      final timeEntry = TimeEntry(
+        start_time: _startDate!,
+        end_time: _endDate!,
+        user_id: user!.id,
+        total_hours: _endDate!.difference(_startDate!).inHours.toDouble(),
+        note: _noteController.text,
       );
+
+      ref
+          .read(entryServiceProvider)
+          .createEntry(timeEntry)
+          .then((createdEntry) {
+            // Successfully created entry
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Zeiteintrag erfolgreich gespeichert'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          })
+          .catchError((error) {
+            // Handle error
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Fehler beim Speichern des Zeiteintrags: $error'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          });
 
       // Close the page
       Navigator.pop(context);
@@ -98,6 +123,7 @@ class _AddTimeEntryPageState extends ConsumerState<AddTimeEntryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text('Zeiteintrag hinzufügen')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

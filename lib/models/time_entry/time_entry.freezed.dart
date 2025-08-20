@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TimeEntry {
 
- String get id; DateTime get startTime; DateTime get endTime; String get userId; double get totalHours; DateTime get date; String? get note;
+ int? get id; DateTime get start_time; DateTime get end_time;@JsonKey(fromJson: _parseUserId) int get user_id;@JsonKey(fromJson: _parseTotalHours) double get total_hours; String? get note;
 /// Create a copy of TimeEntry
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $TimeEntryCopyWith<TimeEntry> get copyWith => _$TimeEntryCopyWithImpl<TimeEntry>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TimeEntry&&(identical(other.id, id) || other.id == id)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.totalHours, totalHours) || other.totalHours == totalHours)&&(identical(other.date, date) || other.date == date)&&(identical(other.note, note) || other.note == note));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TimeEntry&&(identical(other.id, id) || other.id == id)&&(identical(other.start_time, start_time) || other.start_time == start_time)&&(identical(other.end_time, end_time) || other.end_time == end_time)&&(identical(other.user_id, user_id) || other.user_id == user_id)&&(identical(other.total_hours, total_hours) || other.total_hours == total_hours)&&(identical(other.note, note) || other.note == note));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,startTime,endTime,userId,totalHours,date,note);
+int get hashCode => Object.hash(runtimeType,id,start_time,end_time,user_id,total_hours,note);
 
 @override
 String toString() {
-  return 'TimeEntry(id: $id, startTime: $startTime, endTime: $endTime, userId: $userId, totalHours: $totalHours, date: $date, note: $note)';
+  return 'TimeEntry(id: $id, start_time: $start_time, end_time: $end_time, user_id: $user_id, total_hours: $total_hours, note: $note)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $TimeEntryCopyWith<$Res>  {
   factory $TimeEntryCopyWith(TimeEntry value, $Res Function(TimeEntry) _then) = _$TimeEntryCopyWithImpl;
 @useResult
 $Res call({
- String id, DateTime startTime, DateTime endTime, String userId, double totalHours, DateTime date, String? note
+ int? id, DateTime start_time, DateTime end_time,@JsonKey(fromJson: _parseUserId) int user_id,@JsonKey(fromJson: _parseTotalHours) double total_hours, String? note
 });
 
 
@@ -65,15 +65,14 @@ class _$TimeEntryCopyWithImpl<$Res>
 
 /// Create a copy of TimeEntry
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? startTime = null,Object? endTime = null,Object? userId = null,Object? totalHours = null,Object? date = null,Object? note = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? start_time = null,Object? end_time = null,Object? user_id = null,Object? total_hours = null,Object? note = freezed,}) {
   return _then(_self.copyWith(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,startTime: null == startTime ? _self.startTime : startTime // ignore: cast_nullable_to_non_nullable
-as DateTime,endTime: null == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
-as DateTime,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String,totalHours: null == totalHours ? _self.totalHours : totalHours // ignore: cast_nullable_to_non_nullable
-as double,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
-as DateTime,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int?,start_time: null == start_time ? _self.start_time : start_time // ignore: cast_nullable_to_non_nullable
+as DateTime,end_time: null == end_time ? _self.end_time : end_time // ignore: cast_nullable_to_non_nullable
+as DateTime,user_id: null == user_id ? _self.user_id : user_id // ignore: cast_nullable_to_non_nullable
+as int,total_hours: null == total_hours ? _self.total_hours : total_hours // ignore: cast_nullable_to_non_nullable
+as double,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -159,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime startTime,  DateTime endTime,  String userId,  double totalHours,  DateTime date,  String? note)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  DateTime start_time,  DateTime end_time, @JsonKey(fromJson: _parseUserId)  int user_id, @JsonKey(fromJson: _parseTotalHours)  double total_hours,  String? note)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TimeEntry() when $default != null:
-return $default(_that.id,_that.startTime,_that.endTime,_that.userId,_that.totalHours,_that.date,_that.note);case _:
+return $default(_that.id,_that.start_time,_that.end_time,_that.user_id,_that.total_hours,_that.note);case _:
   return orElse();
 
 }
@@ -180,10 +179,10 @@ return $default(_that.id,_that.startTime,_that.endTime,_that.userId,_that.totalH
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime startTime,  DateTime endTime,  String userId,  double totalHours,  DateTime date,  String? note)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  DateTime start_time,  DateTime end_time, @JsonKey(fromJson: _parseUserId)  int user_id, @JsonKey(fromJson: _parseTotalHours)  double total_hours,  String? note)  $default,) {final _that = this;
 switch (_that) {
 case _TimeEntry():
-return $default(_that.id,_that.startTime,_that.endTime,_that.userId,_that.totalHours,_that.date,_that.note);case _:
+return $default(_that.id,_that.start_time,_that.end_time,_that.user_id,_that.total_hours,_that.note);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,10 +199,10 @@ return $default(_that.id,_that.startTime,_that.endTime,_that.userId,_that.totalH
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime startTime,  DateTime endTime,  String userId,  double totalHours,  DateTime date,  String? note)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  DateTime start_time,  DateTime end_time, @JsonKey(fromJson: _parseUserId)  int user_id, @JsonKey(fromJson: _parseTotalHours)  double total_hours,  String? note)?  $default,) {final _that = this;
 switch (_that) {
 case _TimeEntry() when $default != null:
-return $default(_that.id,_that.startTime,_that.endTime,_that.userId,_that.totalHours,_that.date,_that.note);case _:
+return $default(_that.id,_that.start_time,_that.end_time,_that.user_id,_that.total_hours,_that.note);case _:
   return null;
 
 }
@@ -215,15 +214,14 @@ return $default(_that.id,_that.startTime,_that.endTime,_that.userId,_that.totalH
 @JsonSerializable()
 
 class _TimeEntry implements TimeEntry {
-  const _TimeEntry({required this.id, required this.startTime, required this.endTime, required this.userId, required this.totalHours, required this.date, this.note});
+  const _TimeEntry({this.id, required this.start_time, required this.end_time, @JsonKey(fromJson: _parseUserId) required this.user_id, @JsonKey(fromJson: _parseTotalHours) required this.total_hours, this.note});
   factory _TimeEntry.fromJson(Map<String, dynamic> json) => _$TimeEntryFromJson(json);
 
-@override final  String id;
-@override final  DateTime startTime;
-@override final  DateTime endTime;
-@override final  String userId;
-@override final  double totalHours;
-@override final  DateTime date;
+@override final  int? id;
+@override final  DateTime start_time;
+@override final  DateTime end_time;
+@override@JsonKey(fromJson: _parseUserId) final  int user_id;
+@override@JsonKey(fromJson: _parseTotalHours) final  double total_hours;
 @override final  String? note;
 
 /// Create a copy of TimeEntry
@@ -239,16 +237,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TimeEntry&&(identical(other.id, id) || other.id == id)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.totalHours, totalHours) || other.totalHours == totalHours)&&(identical(other.date, date) || other.date == date)&&(identical(other.note, note) || other.note == note));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TimeEntry&&(identical(other.id, id) || other.id == id)&&(identical(other.start_time, start_time) || other.start_time == start_time)&&(identical(other.end_time, end_time) || other.end_time == end_time)&&(identical(other.user_id, user_id) || other.user_id == user_id)&&(identical(other.total_hours, total_hours) || other.total_hours == total_hours)&&(identical(other.note, note) || other.note == note));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,startTime,endTime,userId,totalHours,date,note);
+int get hashCode => Object.hash(runtimeType,id,start_time,end_time,user_id,total_hours,note);
 
 @override
 String toString() {
-  return 'TimeEntry(id: $id, startTime: $startTime, endTime: $endTime, userId: $userId, totalHours: $totalHours, date: $date, note: $note)';
+  return 'TimeEntry(id: $id, start_time: $start_time, end_time: $end_time, user_id: $user_id, total_hours: $total_hours, note: $note)';
 }
 
 
@@ -259,7 +257,7 @@ abstract mixin class _$TimeEntryCopyWith<$Res> implements $TimeEntryCopyWith<$Re
   factory _$TimeEntryCopyWith(_TimeEntry value, $Res Function(_TimeEntry) _then) = __$TimeEntryCopyWithImpl;
 @override @useResult
 $Res call({
- String id, DateTime startTime, DateTime endTime, String userId, double totalHours, DateTime date, String? note
+ int? id, DateTime start_time, DateTime end_time,@JsonKey(fromJson: _parseUserId) int user_id,@JsonKey(fromJson: _parseTotalHours) double total_hours, String? note
 });
 
 
@@ -276,15 +274,14 @@ class __$TimeEntryCopyWithImpl<$Res>
 
 /// Create a copy of TimeEntry
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? startTime = null,Object? endTime = null,Object? userId = null,Object? totalHours = null,Object? date = null,Object? note = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? start_time = null,Object? end_time = null,Object? user_id = null,Object? total_hours = null,Object? note = freezed,}) {
   return _then(_TimeEntry(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,startTime: null == startTime ? _self.startTime : startTime // ignore: cast_nullable_to_non_nullable
-as DateTime,endTime: null == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
-as DateTime,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String,totalHours: null == totalHours ? _self.totalHours : totalHours // ignore: cast_nullable_to_non_nullable
-as double,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
-as DateTime,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int?,start_time: null == start_time ? _self.start_time : start_time // ignore: cast_nullable_to_non_nullable
+as DateTime,end_time: null == end_time ? _self.end_time : end_time // ignore: cast_nullable_to_non_nullable
+as DateTime,user_id: null == user_id ? _self.user_id : user_id // ignore: cast_nullable_to_non_nullable
+as int,total_hours: null == total_hours ? _self.total_hours : total_hours // ignore: cast_nullable_to_non_nullable
+as double,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

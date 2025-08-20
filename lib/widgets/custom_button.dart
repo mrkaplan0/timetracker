@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
+import 'package:glass_kit/glass_kit.dart';
 import 'package:timetracker/utils/consts.dart';
 
 class CustomButton extends StatelessWidget {
@@ -45,21 +45,13 @@ class CustomButton extends StatelessWidget {
               onTap: onTap,
               splashColor: Colors.blueGrey.withAlpha(30),
               highlightColor: Colors.blueGrey.withAlpha(10),
-              child: LiquidGlassLayer(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    LiquidGlass.inLayer(
-                      shape: LiquidRoundedSuperellipse(
-                        borderRadius: Radius.circular(40),
-                      ),
-                      child: SizedBox.square(
-                        dimension: 100,
-                        child: Icon(icon, size: 50, color: Colors.black54),
-                      ),
-                    ),
-                  ],
+              child: SizedBox.square(
+                dimension: 100,
+                child: GlassContainer.clearGlass(
+                  borderColor: Colors.white.withAlpha(50),
+                  shape: BoxShape.circle,
+                  elevation: 10,
+                  child: Icon(icon, size: 50, color: Colors.black54),
                 ),
               ),
             ),
