@@ -24,10 +24,11 @@ double _parseTotalHours(dynamic value) {
 abstract class TimeEntry with _$TimeEntry {
   const factory TimeEntry({
     int? id,
-    required DateTime start_time,
-    required DateTime end_time,
-    @JsonKey(fromJson: _parseUserId) required int user_id,
-    @JsonKey(fromJson: _parseTotalHours) required double total_hours,
+    @JsonKey(name: "start_time") required DateTime startTime,
+    @JsonKey(name: "end_time") required DateTime endTime,
+    @JsonKey(fromJson: _parseUserId, name: "user_id") required int userId,
+    @JsonKey(fromJson: _parseTotalHours, name: "total_hours")
+    required double totalHours,
     String? note,
   }) = _TimeEntry;
 

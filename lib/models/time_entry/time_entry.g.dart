@@ -8,19 +8,19 @@ part of 'time_entry.dart';
 
 _TimeEntry _$TimeEntryFromJson(Map<String, dynamic> json) => _TimeEntry(
   id: (json['id'] as num?)?.toInt(),
-  start_time: DateTime.parse(json['start_time'] as String),
-  end_time: DateTime.parse(json['end_time'] as String),
-  user_id: _parseUserId(json['user_id']),
-  total_hours: _parseTotalHours(json['total_hours']),
+  startTime: DateTime.parse(json['start_time'] as String),
+  endTime: DateTime.parse(json['end_time'] as String),
+  userId: _parseUserId(json['user_id']),
+  totalHours: _parseTotalHours(json['total_hours']),
   note: json['note'] as String?,
 );
 
 Map<String, dynamic> _$TimeEntryToJson(_TimeEntry instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'start_time': instance.start_time.toIso8601String(),
-      'end_time': instance.end_time.toIso8601String(),
-      'user_id': instance.user_id,
-      'total_hours': instance.total_hours,
+      'start_time': instance.startTime.toIso8601String(),
+      'end_time': instance.endTime.toIso8601String(),
+      'user_id': instance.userId,
+      'total_hours': instance.totalHours,
       'note': instance.note,
     };

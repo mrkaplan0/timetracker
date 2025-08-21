@@ -159,7 +159,8 @@ class LoginPage extends ConsumerWidget {
           const SnackBar(content: Text('Bitte füllen Sie alle Felder aus')),
         );
       }
-    } on Exception catch (e) {
+    } catch (e) {
+      print('Login error: $e');
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Ein Fehler ist aufgetreten: $e')));

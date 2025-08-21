@@ -1,5 +1,5 @@
 class Configs {
-  static const String apiBaseUrl = 'http://10.15.1.251:8000';
+  static const String apiBaseUrl = 'http://192.168.2.39:8000';
   static const String loginUrl = '/api/login';
   static const String timeEntriesUrl = '/api/time-entries';
   static const String registerUrl = '/api/register';

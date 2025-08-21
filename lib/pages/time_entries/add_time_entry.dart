@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:glass_kit/glass_kit.dart';
 import 'package:timetracker/models/time_entry/time_entry.dart';
 import 'package:timetracker/models/user/user.dart';
 import 'package:timetracker/providers/auth_provider.dart';
@@ -13,8 +14,9 @@ class AddTimeEntryPage extends ConsumerStatefulWidget {
 }
 
 class _AddTimeEntryPageState extends ConsumerState<AddTimeEntryPage> {
-  DateTime? _startDate;
-  DateTime? _endDate;
+  DateTime? _selectedDate;
+  TimeOfDay? _startTime;
+  TimeOfDay? _endTime;
   final _noteController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -24,8 +26,7 @@ class _AddTimeEntryPageState extends ConsumerState<AddTimeEntryPage> {
     super.dispose();
   }
 
-  Future<void> _selectDateTime(bool isStartDate) async {
-    // First show date picker
+  Future<void> _selectDate() async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -34,50 +35,62 @@ class _AddTimeEntryPageState extends ConsumerState<AddTimeEntryPage> {
     );
 
     if (pickedDate != null) {
-      // Then show time picker
-      final TimeOfDay? pickedTime = await showTimePicker(
-        // ignore: use_build_context_synchronously
-        context: context,
-        initialTime: TimeOfDay.now(),
-      );
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    }
+  }
 
-      if (pickedTime != null) {
-        // Combine date and time
-        final DateTime combinedDateTime = DateTime(
-          pickedDate.year,
-          pickedDate.month,
-          pickedDate.day,
-          pickedTime.hour,
-          pickedTime.minute,
-        );
+  Future<void> _selectTime(bool isStartTime) async {
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
 
-        setState(() {
-          if (isStartDate) {
-            _startDate = combinedDateTime;
-          } else {
-            _endDate = combinedDateTime;
-          }
-        });
-      }
+    if (pickedTime != null) {
+      setState(() {
+        if (isStartTime) {
+          _startTime = pickedTime;
+        } else {
+          _endTime = pickedTime;
+        }
+      });
     }
   }
 
   void _saveTimeEntry() async {
     if (_formKey.currentState!.validate()) {
-      if (_startDate == null || _endDate == null) {
+      if (_selectedDate == null || _startTime == null || _endTime == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Bitte wählen Sie Start- und Enddatum aus'),
+            content: Text('Bitte wählen Sie Datum, Start- und Endzeit aus'),
             backgroundColor: Colors.red,
           ),
         );
         return;
       }
 
-      if (_endDate!.isBefore(_startDate!)) {
+      // Combine date with start and end times
+      final DateTime startDateTime = DateTime(
+        _selectedDate!.year,
+        _selectedDate!.month,
+        _selectedDate!.day,
+        _startTime!.hour,
+        _startTime!.minute,
+      );
+
+      final DateTime endDateTime = DateTime(
+        _selectedDate!.year,
+        _selectedDate!.month,
+        _selectedDate!.day,
+        _endTime!.hour,
+        _endTime!.minute,
+      );
+
+      if (endDateTime.isBefore(startDateTime)) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Enddatum darf nicht vor Startdatum liegen'),
+            content: Text('Endzeit darf nicht vor Startzeit liegen'),
             backgroundColor: Colors.red,
           ),
         );
@@ -86,10 +99,10 @@ class _AddTimeEntryPageState extends ConsumerState<AddTimeEntryPage> {
       User? user = await ref.read(currentUserProvider.future);
       // Here the time entry saving operation will be performed
       final timeEntry = TimeEntry(
-        start_time: _startDate!,
-        end_time: _endDate!,
-        user_id: user!.id,
-        total_hours: _endDate!.difference(_startDate!).inHours.toDouble(),
+        startTime: startDateTime,
+        endTime: endDateTime,
+        userId: user!.id,
+        totalHours: endDateTime.difference(startDateTime).inHours.toDouble(),
         note: _noteController.text,
       );
 
@@ -97,6 +110,8 @@ class _AddTimeEntryPageState extends ConsumerState<AddTimeEntryPage> {
           .read(entryServiceProvider)
           .createEntry(timeEntry)
           .then((createdEntry) {
+            ref.invalidate(entryListProvider);
+
             // Successfully created entry
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
@@ -123,85 +138,125 @@ class _AddTimeEntryPageState extends ConsumerState<AddTimeEntryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: const Text('Zeiteintrag hinzufügen')),
+      backgroundColor: Colors.blueGrey.shade200,
+      appBar: AppBar(
+        title: const Text('Zeiteintrag hinzufügen'),
+        backgroundColor: Colors.blueGrey.shade200,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Start Date and Time
-              Card(
-                child: ListTile(
-                  leading: const Icon(Icons.access_time),
-                  title: const Text('Startdatum & Zeit'),
-                  subtitle: Text(
-                    _startDate != null
-                        ? '${_startDate!.day}/${_startDate!.month}/${_startDate!.year} ${_startDate!.hour.toString().padLeft(2, '0')}:${_startDate!.minute.toString().padLeft(2, '0')}'
-                        : 'Datum und Zeit auswählen',
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Date Selection
+                GlassContainer.frostedGlass(
+                  borderColor: Colors.white,
+                  borderWidth: 1,
+                  height: 80,
+                  borderRadius: BorderRadius.circular(12),
+                  child: ListTile(
+                    leading: const Icon(Icons.calendar_today),
+                    title: const Text('Datum'),
+                    subtitle: Text(
+                      _selectedDate != null
+                          ? '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}'
+                          : 'Datum auswählen',
+                    ),
+                    trailing: const Icon(Icons.arrow_forward_ios),
+                    onTap: _selectDate,
                   ),
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                  onTap: () => _selectDateTime(true),
                 ),
-              ),
 
-              const SizedBox(height: 16),
+                const SizedBox(height: 16),
 
-              // End Date and Time
-              Card(
-                child: ListTile(
-                  leading: const Icon(Icons.access_time),
-                  title: const Text('Enddatum & Zeit'),
-                  subtitle: Text(
-                    _endDate != null
-                        ? '${_endDate!.day}/${_endDate!.month}/${_endDate!.year} ${_endDate!.hour.toString().padLeft(2, '0')}:${_endDate!.minute.toString().padLeft(2, '0')}'
-                        : 'Datum und Zeit auswählen',
+                // Start Time
+                GlassContainer.frostedGlass(
+                  height: 80,
+                  borderColor: Colors.white,
+                  borderWidth: 1,
+                  borderRadius: BorderRadius.circular(12),
+                  child: ListTile(
+                    leading: const Icon(Icons.access_time),
+                    title: const Text('Startzeit'),
+                    subtitle: Text(
+                      _startTime != null
+                          ? '${_startTime!.hour.toString().padLeft(2, '0')}:${_startTime!.minute.toString().padLeft(2, '0')}'
+                          : 'Startzeit auswählen',
+                    ),
+                    trailing: const Icon(Icons.arrow_forward_ios),
+                    onTap: () => _selectTime(true),
                   ),
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                  onTap: () => _selectDateTime(false),
                 ),
-              ),
 
-              const SizedBox(height: 16),
+                const SizedBox(height: 16),
 
-              // Note Field
-              TextFormField(
-                controller: _noteController,
-                decoration: const InputDecoration(
-                  labelText: 'Notiz',
-                  hintText: 'Optional Notiz hinzufügen...',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.note),
+                // End Time
+                GlassContainer.frostedGlass(
+                  height: 80,
+                  borderColor: Colors.white,
+                  borderWidth: 1,
+                  borderRadius: BorderRadius.circular(12),
+                  child: ListTile(
+                    leading: const Icon(Icons.access_time),
+                    title: const Text('Endzeit'),
+                    subtitle: Text(
+                      _endTime != null
+                          ? '${_endTime!.hour.toString().padLeft(2, '0')}:${_endTime!.minute.toString().padLeft(2, '0')}'
+                          : 'Endzeit auswählen',
+                    ),
+                    trailing: const Icon(Icons.arrow_forward_ios),
+                    onTap: () => _selectTime(false),
+                  ),
                 ),
-                maxLines: 3,
-                validator: (value) {
-                  // Note field is optional, no validation
-                  return null;
-                },
-              ),
 
-              const SizedBox(height: 24),
+                const SizedBox(height: 16),
 
-              // Save Button
-              ElevatedButton(
-                onPressed: _saveTimeEntry,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Theme.of(context).primaryColor,
-                  foregroundColor: Colors.white,
+                // Note Field
+                GlassContainer.frostedGlass(
+                  height: 100,
+                  borderColor: Colors.white,
+                  borderWidth: 1,
+                  borderRadius: BorderRadius.circular(12),
+                  child: TextFormField(
+                    controller: _noteController,
+                    decoration: const InputDecoration(
+                      labelText: 'Notiz',
+                      hintText: 'Optional Notiz hinzufügen...',
+                      prefixIcon: Icon(Icons.note),
+                      border: InputBorder.none,
+                    ),
+                    maxLines: 3,
+                    validator: (value) {
+                      // Note field is optional, no validation
+                      return null;
+                    },
+                  ),
                 ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.save),
-                    SizedBox(width: 8),
-                    Text('Speichern', style: TextStyle(fontSize: 16)),
-                  ],
+
+                const SizedBox(height: 24),
+
+                // Save Button
+                ElevatedButton(
+                  onPressed: _saveTimeEntry,
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    backgroundColor: Theme.of(context).primaryColor,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.save),
+                      SizedBox(width: 8),
+                      Text('Speichern', style: TextStyle(fontSize: 16)),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
