@@ -6,6 +6,9 @@ class Configs {
   static const String logoutUrl = '/api/logout';
   static const String currentUserUrl = '/api/user';
   static const String userEntriesUrl = '/api/time-entries';
+  static const String adminUrl = '/api/admin';
+  static const String allReportsUrl = '/reports/time';
+  static const String oneUserReportUrl = '/users/';
   static const int defaultTimeout = 30; // in seconds
   static const bool enableLogging = true;
 }

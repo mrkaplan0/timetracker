@@ -10,8 +10,8 @@ _TimeEntry _$TimeEntryFromJson(Map<String, dynamic> json) => _TimeEntry(
   id: (json['id'] as num?)?.toInt(),
   startTime: DateTime.parse(json['start_time'] as String),
   endTime: DateTime.parse(json['end_time'] as String),
-  userId: _parseUserId(json['user_id']),
-  totalHours: _parseTotalHours(json['total_hours']),
+  userId: TypeFormatter.parseToInt(json['user_id']),
+  totalHours: TypeFormatter.parseToDouble(json['total_hours']),
   note: json['note'] as String?,
 );
 

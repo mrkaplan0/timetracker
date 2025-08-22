@@ -7,11 +7,11 @@ part of 'user_report.dart';
 // **************************************************************************
 
 _UserReport _$UserReportFromJson(Map<String, dynamic> json) => _UserReport(
-  userId: (json['user_id'] as num).toInt(),
+  userId: TypeFormatter.parseToInt(json['user_id']),
   name: json['name'] as String,
-  entryCount: (json['entry_count'] as num).toInt(),
-  expectedHours: (json['expected_hours'] as num).toDouble(),
-  totalHours: (json['total_hours'] as num).toDouble(),
+  entryCount: TypeFormatter.parseToInt(json['entry_count']),
+  expectedHours: TypeFormatter.parseToDouble(json['expected_hours']),
+  totalHours: TypeFormatter.parseToDouble(json['total_hours']),
   difference: (json['difference'] as num).toDouble(),
 );
 

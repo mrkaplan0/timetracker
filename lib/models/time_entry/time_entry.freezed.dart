@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TimeEntry {
 
- int? get id;@JsonKey(name: "start_time") DateTime get startTime;@JsonKey(name: "end_time") DateTime get endTime;@JsonKey(fromJson: _parseUserId, name: "user_id") int get userId;@JsonKey(fromJson: _parseTotalHours, name: "total_hours") double get totalHours; String? get note;
+ int? get id;@JsonKey(name: "start_time") DateTime get startTime;@JsonKey(name: "end_time") DateTime get endTime;@JsonKey(fromJson: TypeFormatter.parseToInt, name: "user_id") int get userId;@JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours") double get totalHours; String? get note;
 /// Create a copy of TimeEntry
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $TimeEntryCopyWith<$Res>  {
   factory $TimeEntryCopyWith(TimeEntry value, $Res Function(TimeEntry) _then) = _$TimeEntryCopyWithImpl;
 @useResult
 $Res call({
- int? id,@JsonKey(name: "start_time") DateTime startTime,@JsonKey(name: "end_time") DateTime endTime,@JsonKey(fromJson: _parseUserId, name: "user_id") int userId,@JsonKey(fromJson: _parseTotalHours, name: "total_hours") double totalHours, String? note
+ int? id,@JsonKey(name: "start_time") DateTime startTime,@JsonKey(name: "end_time") DateTime endTime,@JsonKey(fromJson: TypeFormatter.parseToInt, name: "user_id") int userId,@JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours") double totalHours, String? note
 });
 
 
@@ -158,7 +158,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: "start_time")  DateTime startTime, @JsonKey(name: "end_time")  DateTime endTime, @JsonKey(fromJson: _parseUserId, name: "user_id")  int userId, @JsonKey(fromJson: _parseTotalHours, name: "total_hours")  double totalHours,  String? note)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: "start_time")  DateTime startTime, @JsonKey(name: "end_time")  DateTime endTime, @JsonKey(fromJson: TypeFormatter.parseToInt, name: "user_id")  int userId, @JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours")  double totalHours,  String? note)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TimeEntry() when $default != null:
 return $default(_that.id,_that.startTime,_that.endTime,_that.userId,_that.totalHours,_that.note);case _:
@@ -179,7 +179,7 @@ return $default(_that.id,_that.startTime,_that.endTime,_that.userId,_that.totalH
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: "start_time")  DateTime startTime, @JsonKey(name: "end_time")  DateTime endTime, @JsonKey(fromJson: _parseUserId, name: "user_id")  int userId, @JsonKey(fromJson: _parseTotalHours, name: "total_hours")  double totalHours,  String? note)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: "start_time")  DateTime startTime, @JsonKey(name: "end_time")  DateTime endTime, @JsonKey(fromJson: TypeFormatter.parseToInt, name: "user_id")  int userId, @JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours")  double totalHours,  String? note)  $default,) {final _that = this;
 switch (_that) {
 case _TimeEntry():
 return $default(_that.id,_that.startTime,_that.endTime,_that.userId,_that.totalHours,_that.note);case _:
@@ -199,7 +199,7 @@ return $default(_that.id,_that.startTime,_that.endTime,_that.userId,_that.totalH
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id, @JsonKey(name: "start_time")  DateTime startTime, @JsonKey(name: "end_time")  DateTime endTime, @JsonKey(fromJson: _parseUserId, name: "user_id")  int userId, @JsonKey(fromJson: _parseTotalHours, name: "total_hours")  double totalHours,  String? note)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id, @JsonKey(name: "start_time")  DateTime startTime, @JsonKey(name: "end_time")  DateTime endTime, @JsonKey(fromJson: TypeFormatter.parseToInt, name: "user_id")  int userId, @JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours")  double totalHours,  String? note)?  $default,) {final _that = this;
 switch (_that) {
 case _TimeEntry() when $default != null:
 return $default(_that.id,_that.startTime,_that.endTime,_that.userId,_that.totalHours,_that.note);case _:
@@ -214,14 +214,14 @@ return $default(_that.id,_that.startTime,_that.endTime,_that.userId,_that.totalH
 @JsonSerializable()
 
 class _TimeEntry implements TimeEntry {
-  const _TimeEntry({this.id, @JsonKey(name: "start_time") required this.startTime, @JsonKey(name: "end_time") required this.endTime, @JsonKey(fromJson: _parseUserId, name: "user_id") required this.userId, @JsonKey(fromJson: _parseTotalHours, name: "total_hours") required this.totalHours, this.note});
+  const _TimeEntry({this.id, @JsonKey(name: "start_time") required this.startTime, @JsonKey(name: "end_time") required this.endTime, @JsonKey(fromJson: TypeFormatter.parseToInt, name: "user_id") required this.userId, @JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours") required this.totalHours, this.note});
   factory _TimeEntry.fromJson(Map<String, dynamic> json) => _$TimeEntryFromJson(json);
 
 @override final  int? id;
 @override@JsonKey(name: "start_time") final  DateTime startTime;
 @override@JsonKey(name: "end_time") final  DateTime endTime;
-@override@JsonKey(fromJson: _parseUserId, name: "user_id") final  int userId;
-@override@JsonKey(fromJson: _parseTotalHours, name: "total_hours") final  double totalHours;
+@override@JsonKey(fromJson: TypeFormatter.parseToInt, name: "user_id") final  int userId;
+@override@JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours") final  double totalHours;
 @override final  String? note;
 
 /// Create a copy of TimeEntry
@@ -257,7 +257,7 @@ abstract mixin class _$TimeEntryCopyWith<$Res> implements $TimeEntryCopyWith<$Re
   factory _$TimeEntryCopyWith(_TimeEntry value, $Res Function(_TimeEntry) _then) = __$TimeEntryCopyWithImpl;
 @override @useResult
 $Res call({
- int? id,@JsonKey(name: "start_time") DateTime startTime,@JsonKey(name: "end_time") DateTime endTime,@JsonKey(fromJson: _parseUserId, name: "user_id") int userId,@JsonKey(fromJson: _parseTotalHours, name: "total_hours") double totalHours, String? note
+ int? id,@JsonKey(name: "start_time") DateTime startTime,@JsonKey(name: "end_time") DateTime endTime,@JsonKey(fromJson: TypeFormatter.parseToInt, name: "user_id") int userId,@JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours") double totalHours, String? note
 });
 
 

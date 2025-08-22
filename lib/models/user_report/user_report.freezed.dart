@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserReport {
 
-@JsonKey(name: "user_id") int get userId; String get name;@JsonKey(name: "entry_count") int get entryCount;@JsonKey(name: "expected_hours") double get expectedHours;@JsonKey(name: "total_hours") double get totalHours; double get difference;
+@JsonKey(fromJson: TypeFormatter.parseToInt, name: "user_id") int get userId; String get name;@JsonKey(fromJson: TypeFormatter.parseToInt, name: "entry_count") int get entryCount;@JsonKey(fromJson: TypeFormatter.parseToDouble, name: "expected_hours") double get expectedHours;@JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours") double get totalHours; double get difference;
 /// Create a copy of UserReport
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $UserReportCopyWith<$Res>  {
   factory $UserReportCopyWith(UserReport value, $Res Function(UserReport) _then) = _$UserReportCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: "user_id") int userId, String name,@JsonKey(name: "entry_count") int entryCount,@JsonKey(name: "expected_hours") double expectedHours,@JsonKey(name: "total_hours") double totalHours, double difference
+@JsonKey(fromJson: TypeFormatter.parseToInt, name: "user_id") int userId, String name,@JsonKey(fromJson: TypeFormatter.parseToInt, name: "entry_count") int entryCount,@JsonKey(fromJson: TypeFormatter.parseToDouble, name: "expected_hours") double expectedHours,@JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours") double totalHours, double difference
 });
 
 
@@ -158,7 +158,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: "user_id")  int userId,  String name, @JsonKey(name: "entry_count")  int entryCount, @JsonKey(name: "expected_hours")  double expectedHours, @JsonKey(name: "total_hours")  double totalHours,  double difference)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: TypeFormatter.parseToInt, name: "user_id")  int userId,  String name, @JsonKey(fromJson: TypeFormatter.parseToInt, name: "entry_count")  int entryCount, @JsonKey(fromJson: TypeFormatter.parseToDouble, name: "expected_hours")  double expectedHours, @JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours")  double totalHours,  double difference)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserReport() when $default != null:
 return $default(_that.userId,_that.name,_that.entryCount,_that.expectedHours,_that.totalHours,_that.difference);case _:
@@ -179,7 +179,7 @@ return $default(_that.userId,_that.name,_that.entryCount,_that.expectedHours,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: "user_id")  int userId,  String name, @JsonKey(name: "entry_count")  int entryCount, @JsonKey(name: "expected_hours")  double expectedHours, @JsonKey(name: "total_hours")  double totalHours,  double difference)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: TypeFormatter.parseToInt, name: "user_id")  int userId,  String name, @JsonKey(fromJson: TypeFormatter.parseToInt, name: "entry_count")  int entryCount, @JsonKey(fromJson: TypeFormatter.parseToDouble, name: "expected_hours")  double expectedHours, @JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours")  double totalHours,  double difference)  $default,) {final _that = this;
 switch (_that) {
 case _UserReport():
 return $default(_that.userId,_that.name,_that.entryCount,_that.expectedHours,_that.totalHours,_that.difference);case _:
@@ -199,7 +199,7 @@ return $default(_that.userId,_that.name,_that.entryCount,_that.expectedHours,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: "user_id")  int userId,  String name, @JsonKey(name: "entry_count")  int entryCount, @JsonKey(name: "expected_hours")  double expectedHours, @JsonKey(name: "total_hours")  double totalHours,  double difference)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: TypeFormatter.parseToInt, name: "user_id")  int userId,  String name, @JsonKey(fromJson: TypeFormatter.parseToInt, name: "entry_count")  int entryCount, @JsonKey(fromJson: TypeFormatter.parseToDouble, name: "expected_hours")  double expectedHours, @JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours")  double totalHours,  double difference)?  $default,) {final _that = this;
 switch (_that) {
 case _UserReport() when $default != null:
 return $default(_that.userId,_that.name,_that.entryCount,_that.expectedHours,_that.totalHours,_that.difference);case _:
@@ -214,14 +214,14 @@ return $default(_that.userId,_that.name,_that.entryCount,_that.expectedHours,_th
 @JsonSerializable()
 
 class _UserReport implements UserReport {
-  const _UserReport({@JsonKey(name: "user_id") required this.userId, required this.name, @JsonKey(name: "entry_count") required this.entryCount, @JsonKey(name: "expected_hours") required this.expectedHours, @JsonKey(name: "total_hours") required this.totalHours, required this.difference});
+  const _UserReport({@JsonKey(fromJson: TypeFormatter.parseToInt, name: "user_id") required this.userId, required this.name, @JsonKey(fromJson: TypeFormatter.parseToInt, name: "entry_count") required this.entryCount, @JsonKey(fromJson: TypeFormatter.parseToDouble, name: "expected_hours") required this.expectedHours, @JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours") required this.totalHours, required this.difference});
   factory _UserReport.fromJson(Map<String, dynamic> json) => _$UserReportFromJson(json);
 
-@override@JsonKey(name: "user_id") final  int userId;
+@override@JsonKey(fromJson: TypeFormatter.parseToInt, name: "user_id") final  int userId;
 @override final  String name;
-@override@JsonKey(name: "entry_count") final  int entryCount;
-@override@JsonKey(name: "expected_hours") final  double expectedHours;
-@override@JsonKey(name: "total_hours") final  double totalHours;
+@override@JsonKey(fromJson: TypeFormatter.parseToInt, name: "entry_count") final  int entryCount;
+@override@JsonKey(fromJson: TypeFormatter.parseToDouble, name: "expected_hours") final  double expectedHours;
+@override@JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours") final  double totalHours;
 @override final  double difference;
 
 /// Create a copy of UserReport
@@ -257,7 +257,7 @@ abstract mixin class _$UserReportCopyWith<$Res> implements $UserReportCopyWith<$
   factory _$UserReportCopyWith(_UserReport value, $Res Function(_UserReport) _then) = __$UserReportCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: "user_id") int userId, String name,@JsonKey(name: "entry_count") int entryCount,@JsonKey(name: "expected_hours") double expectedHours,@JsonKey(name: "total_hours") double totalHours, double difference
+@JsonKey(fromJson: TypeFormatter.parseToInt, name: "user_id") int userId, String name,@JsonKey(fromJson: TypeFormatter.parseToInt, name: "entry_count") int entryCount,@JsonKey(fromJson: TypeFormatter.parseToDouble, name: "expected_hours") double expectedHours,@JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours") double totalHours, double difference
 });
 
 

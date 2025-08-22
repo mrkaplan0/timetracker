@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timetracker/pages/auth/login_page.dart';
 import 'package:timetracker/pages/auth/register_page.dart';
+import 'package:timetracker/pages/dashboard/admin_dashboard.dart';
 import 'package:timetracker/pages/dashboard/user_dashboard.dart';
 import 'package:timetracker/pages/landing_page.dart';
 import 'package:timetracker/pages/splash/splash_screen.dart';
@@ -30,7 +31,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),
-        '/home': (context) => const UserDashboard(),
+        '/user_dashboard': (context) => const UserDashboard(),
+        '/admin_dashboard': (context) => AdminDashboard(),
         '/register': (context) => RegisterPage(),
         '/login': (context) => LoginPage(),
         '/landing': (context) => const LandingPage(),

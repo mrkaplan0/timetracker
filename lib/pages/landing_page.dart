@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timetracker/pages/auth/login_page.dart';
+import 'package:timetracker/pages/dashboard/admin_dashboard.dart';
 import 'package:timetracker/pages/dashboard/user_dashboard.dart';
 import 'package:timetracker/providers/auth_provider.dart';
 
@@ -28,7 +29,7 @@ class LandingPage extends ConsumerWidget {
         } else {
           // User is logged in, navigate to the dashboard
           if (user.role == 'admin') {
-            return UserDashboard(); // Admin dashboard
+            return AdminDashboard(); // Admin dashboard
           } else if (user.role == 'user') {
             return UserDashboard(); // Regular user dashboard
           }

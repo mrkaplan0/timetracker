@@ -66,19 +66,6 @@ class UserDashboard extends ConsumerWidget {
             children: [
               SizedBox(height: 20),
 
-              /*  CustomButton(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const AddTimeEntryPage(),
-                    ),
-                  );
-                },
-                imagePath: 'assets/images/add.jpg',
-                height: 250,
-                label: 'Fehlzeit Eintrag',
-                icon: Icons.add,
-              ), */
               myChart(timeEntriesLimited, context),
               SizedBox(
                 height: 100,
@@ -212,7 +199,7 @@ class UserDashboard extends ConsumerWidget {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const TimeEntriesDetailPage(),
+                    builder: (context) => TimeEntriesDetailPage(),
                   ),
                 );
               },

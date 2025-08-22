@@ -152,7 +152,11 @@ class LoginPage extends ConsumerWidget {
             context,
           ).showSnackBar(SnackBar(content: Text('Willkommen ${user.name}!')));
           // Navigate to home or another page after successful login
-          Navigator.pushReplacementNamed(context, '/home');
+          if (user.role == 'admin') {
+            Navigator.pushReplacementNamed(context, '/admin_dashboard');
+          } else if (user.role == 'user') {
+            Navigator.pushReplacementNamed(context, '/user_dashboard');
+          }
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

@@ -1,27 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:glass_kit/glass_kit.dart';
+import 'package:timetracker/models/time_entry/time_entry.dart';
 import 'package:timetracker/providers/entry_provider.dart';
+import 'package:timetracker/utils/consts.dart';
 import 'package:timetracker/utils/date_formatter.dart';
 
 class TimeEntriesDetailPage extends ConsumerWidget {
-  const TimeEntriesDetailPage({super.key});
-
+  TimeEntriesDetailPage({super.key, this.entries});
+  List<TimeEntry>? entries;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final entries = ref.watch(entryListProvider).value ?? [];
+    // ignore: prefer_conditional_assignment
+    if (entries == null) {
+      entries = ref.watch(entryListProvider).value;
+    }
+
     return Scaffold(
       backgroundColor: Colors.blueGrey.shade200,
       appBar: AppBar(
-        title: const Text('Zeiteinträge'),
+        leading: BackButton(color: Colors.white),
+        title: Text(
+          'Zeiteinträge',
+          style: MyConsts.myBigTitleTextStyle.copyWith(color: Colors.white),
+        ),
         backgroundColor: Colors.blueGrey.shade200,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView.builder(
-          itemCount: entries.length,
+          itemCount: entries?.length,
           itemBuilder: (context, index) {
-            final entry = entries[index];
+            final entry = entries?[index];
+            if (entry == null) {
+              return const SizedBox.shrink();
+            }
             return Padding(
               padding: const EdgeInsets.only(bottom: 16.0),
               child: GlassContainer.frostedGlass(

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AdminReport {
 
-@JsonKey(name: "report_period") String get reportPeriod;@JsonKey(name: "total_hours_all_users") int get totalHoursAllUsers; List<UserReport> get users;
+@JsonKey(name: "report_period") String get reportPeriod;@JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours_all_users") double get totalHoursAllUsers; List<UserReport> get users;
 /// Create a copy of AdminReport
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $AdminReportCopyWith<$Res>  {
   factory $AdminReportCopyWith(AdminReport value, $Res Function(AdminReport) _then) = _$AdminReportCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: "report_period") String reportPeriod,@JsonKey(name: "total_hours_all_users") int totalHoursAllUsers, List<UserReport> users
+@JsonKey(name: "report_period") String reportPeriod,@JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours_all_users") double totalHoursAllUsers, List<UserReport> users
 });
 
 
@@ -69,7 +69,7 @@ class _$AdminReportCopyWithImpl<$Res>
   return _then(_self.copyWith(
 reportPeriod: null == reportPeriod ? _self.reportPeriod : reportPeriod // ignore: cast_nullable_to_non_nullable
 as String,totalHoursAllUsers: null == totalHoursAllUsers ? _self.totalHoursAllUsers : totalHoursAllUsers // ignore: cast_nullable_to_non_nullable
-as int,users: null == users ? _self.users : users // ignore: cast_nullable_to_non_nullable
+as double,users: null == users ? _self.users : users // ignore: cast_nullable_to_non_nullable
 as List<UserReport>,
   ));
 }
@@ -155,7 +155,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: "report_period")  String reportPeriod, @JsonKey(name: "total_hours_all_users")  int totalHoursAllUsers,  List<UserReport> users)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: "report_period")  String reportPeriod, @JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours_all_users")  double totalHoursAllUsers,  List<UserReport> users)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AdminReport() when $default != null:
 return $default(_that.reportPeriod,_that.totalHoursAllUsers,_that.users);case _:
@@ -176,7 +176,7 @@ return $default(_that.reportPeriod,_that.totalHoursAllUsers,_that.users);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: "report_period")  String reportPeriod, @JsonKey(name: "total_hours_all_users")  int totalHoursAllUsers,  List<UserReport> users)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: "report_period")  String reportPeriod, @JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours_all_users")  double totalHoursAllUsers,  List<UserReport> users)  $default,) {final _that = this;
 switch (_that) {
 case _AdminReport():
 return $default(_that.reportPeriod,_that.totalHoursAllUsers,_that.users);case _:
@@ -196,7 +196,7 @@ return $default(_that.reportPeriod,_that.totalHoursAllUsers,_that.users);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: "report_period")  String reportPeriod, @JsonKey(name: "total_hours_all_users")  int totalHoursAllUsers,  List<UserReport> users)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: "report_period")  String reportPeriod, @JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours_all_users")  double totalHoursAllUsers,  List<UserReport> users)?  $default,) {final _that = this;
 switch (_that) {
 case _AdminReport() when $default != null:
 return $default(_that.reportPeriod,_that.totalHoursAllUsers,_that.users);case _:
@@ -211,11 +211,11 @@ return $default(_that.reportPeriod,_that.totalHoursAllUsers,_that.users);case _:
 @JsonSerializable()
 
 class _AdminReport implements AdminReport {
-  const _AdminReport({@JsonKey(name: "report_period") required this.reportPeriod, @JsonKey(name: "total_hours_all_users") required this.totalHoursAllUsers, required final  List<UserReport> users}): _users = users;
+  const _AdminReport({@JsonKey(name: "report_period") required this.reportPeriod, @JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours_all_users") required this.totalHoursAllUsers, required final  List<UserReport> users}): _users = users;
   factory _AdminReport.fromJson(Map<String, dynamic> json) => _$AdminReportFromJson(json);
 
 @override@JsonKey(name: "report_period") final  String reportPeriod;
-@override@JsonKey(name: "total_hours_all_users") final  int totalHoursAllUsers;
+@override@JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours_all_users") final  double totalHoursAllUsers;
  final  List<UserReport> _users;
 @override List<UserReport> get users {
   if (_users is EqualUnmodifiableListView) return _users;
@@ -257,7 +257,7 @@ abstract mixin class _$AdminReportCopyWith<$Res> implements $AdminReportCopyWith
   factory _$AdminReportCopyWith(_AdminReport value, $Res Function(_AdminReport) _then) = __$AdminReportCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: "report_period") String reportPeriod,@JsonKey(name: "total_hours_all_users") int totalHoursAllUsers, List<UserReport> users
+@JsonKey(name: "report_period") String reportPeriod,@JsonKey(fromJson: TypeFormatter.parseToDouble, name: "total_hours_all_users") double totalHoursAllUsers, List<UserReport> users
 });
 
 
@@ -278,7 +278,7 @@ class __$AdminReportCopyWithImpl<$Res>
   return _then(_AdminReport(
 reportPeriod: null == reportPeriod ? _self.reportPeriod : reportPeriod // ignore: cast_nullable_to_non_nullable
 as String,totalHoursAllUsers: null == totalHoursAllUsers ? _self.totalHoursAllUsers : totalHoursAllUsers // ignore: cast_nullable_to_non_nullable
-as int,users: null == users ? _self._users : users // ignore: cast_nullable_to_non_nullable
+as double,users: null == users ? _self._users : users // ignore: cast_nullable_to_non_nullable
 as List<UserReport>,
   ));
 }

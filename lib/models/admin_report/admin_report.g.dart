@@ -8,7 +8,9 @@ part of 'admin_report.dart';
 
 _AdminReport _$AdminReportFromJson(Map<String, dynamic> json) => _AdminReport(
   reportPeriod: json['report_period'] as String,
-  totalHoursAllUsers: (json['total_hours_all_users'] as num).toInt(),
+  totalHoursAllUsers: TypeFormatter.parseToDouble(
+    json['total_hours_all_users'],
+  ),
   users: (json['users'] as List<dynamic>)
       .map((e) => UserReport.fromJson(e as Map<String, dynamic>))
       .toList(),
